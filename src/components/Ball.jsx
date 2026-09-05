@@ -107,6 +107,7 @@ export function Ball({ progress, onGoal }) {
   const shadowRingRef = useRef()
   const prevPos    = useRef(null)
   const smoothP    = useRef(0)
+  const smoothPos  = useRef(new Vector3())
   const vel        = useRef(new Vector3())
   const goalFired  = useRef(false)
 
@@ -139,8 +140,8 @@ export function Ball({ progress, onGoal }) {
     const dt = Math.min(rawDelta, 0.05)
     const elapsed = clock.getElapsedTime()
 
-    // GSAP-quality scroll lerp — cinematic glide, never snap
-    smoothP.current = gsapLerp(smoothP.current, progress, 0.08, dt)
+    // Primary scroll lerp — smooth drag behind scroll
+    smoothP.current = gsapLerp(smoothP.current, progress, 0.06, dt)
     const t = Math.max(0, Math.min(1, smoothP.current))
 
     const pos = new Vector3()
@@ -161,14 +162,14 @@ export function Ball({ progress, onGoal }) {
         const arcT = easeInOut(localT / 0.22)
         quadBezier(arc.from, arc.ctrl, arc.to, arcT, pos)
       } else {
-        // Tethered dribble: sinusoidal side-to-side + vertical bounce
+        // Tethered dribble: sinusoidal side-to-side + vertical bounce (heavy ball)
         const base = entry.position
-        const dribFreq = 5.8
-        const dribAmp  = 0.38
+        const dribFreq = 4.93   // 15% slower
+        const dribAmp  = 0.30   // 20% less
         pos.set(
           base.x + Math.sin(elapsed * dribFreq) * dribAmp,
-          BALL_Y + Math.abs(Math.sin(elapsed * 9.0)) * 0.14,
-          base.z + Math.abs(Math.cos(elapsed * 2.6)) * 0.28 - 0.7,
+          BALL_Y + Math.abs(Math.sin(elapsed * 7.65)) * 0.112,  // 15% slower freq, 20% less amp
+          base.z + Math.abs(Math.cos(elapsed * 2.21)) * 0.224 - 0.7,
         )
       }
 
@@ -188,19 +189,23 @@ export function Ball({ progress, onGoal }) {
       }
     }
 
-    meshRef.current.position.copy(pos)
+    // Secondary position lerp — double-smoothing removes residual jitter
+    smoothPos.current.x = gsapLerp(smoothPos.current.x, pos.x, 0.04, dt)
+    smoothPos.current.y = gsapLerp(smoothPos.current.y, pos.y, 0.04, dt)
+    smoothPos.current.z = gsapLerp(smoothPos.current.z, pos.z, 0.04, dt)
+    meshRef.current.position.copy(smoothPos.current)
 
-    // ── Velocity-driven rotation ─────────────────────────────────
+    // ── Velocity-driven rotation (30% slower — weighted spin) ──────
     if (prevPos.current) {
-      vel.current.subVectors(pos, prevPos.current).divideScalar(Math.max(dt, 0.001))
+      vel.current.subVectors(smoothPos.current, prevPos.current).divideScalar(Math.max(dt, 0.001))
       const spd = vel.current.length()
       if (spd > 0.002) {
-        const rm = Math.min(spd * 5.5, 14)
+        const rm = Math.min(spd * 3.85, 9.8)   // 30% reduction on both multiplier and cap
         meshRef.current.rotation.x += vel.current.z * rm * dt * 60
         meshRef.current.rotation.z -= vel.current.x * rm * dt * 60
       }
     }
-    prevPos.current = pos.clone()
+    prevPos.current = smoothPos.current.clone()
 
     // ── Contact shadow: shrinks & fades as ball rises ────────────
     if (shadowRef.current && shadowRingRef.current) {

@@ -18,6 +18,10 @@
   --font-body: 'Inter', sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html, body, #root {
   width: 100%;
   min-height: 100%;
@@ -35,3 +39,9 @@ canvas {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: #111; }
 ::-webkit-scrollbar-thumb { background: #c49a20; border-radius: 2px; }
+
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}

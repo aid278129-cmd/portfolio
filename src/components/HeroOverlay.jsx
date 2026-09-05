@@ -49,9 +49,24 @@ export function HeroOverlay({ visible }) {
               textShadow: '0 4px 24px rgba(0,0,0,0.65)',
             }}
           >
-            Full-Stack<br />
-            <span style={{ color: '#f0c040' }}>Developer</span>
+            Front-End Developer<br />
+            <span style={{ color: '#f0c040' }}>& Creative Coder</span>
           </motion.h1>
+
+          <motion.p
+            initial={{ x: -30, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.38 }}
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '1.1rem',
+              color: 'rgba(255,255,255,0.8)',
+              marginBottom: '1rem',
+              letterSpacing: '0.02em',
+            }}
+          >
+            Shri
+          </motion.p>
 
           <motion.p
             initial={{ x: -30, opacity: 0 }}

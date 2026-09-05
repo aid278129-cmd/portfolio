@@ -1,10 +1,39 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useRef, Suspense } from 'react'
 import { Scene } from './components/Scene.jsx'
 import { DataCard } from './components/DataCard.jsx'
 import { HUD } from './components/HUD.jsx'
 import { HeroOverlay } from './components/HeroOverlay.jsx'
 import { GoalCelebration } from './components/GoalCelebration.jsx'
 import { useCollisions } from './hooks/useCollisions.js'
+
+function LoadingScreen() {
+  return (
+    <div style={{
+      position: 'fixed',
+      inset: 0,
+      background: '#080c14',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 999,
+    }}>
+      <div style={{
+        fontSize: '3rem',
+        animation: 'pulse 1s ease-in-out infinite',
+      }}>⚽</div>
+      <p style={{
+        fontFamily: "'Inter', sans-serif",
+        fontSize: '13px',
+        color: '#f0c040',
+        letterSpacing: '0.15em',
+        marginTop: '1rem',
+      }}>
+        Loading the pitch…
+      </p>
+    </div>
+  )
+}
 
 export default function App() {
   const [progress, setProgress]     = useState(0)
@@ -55,17 +84,19 @@ export default function App() {
 
   return (
     <>
-      {/* Tall scroll container — 600vh = full match */}
-      <div style={{ height: '600vh', background: 'transparent', pointerEvents: 'none' }} />
+      {/* Tall scroll container — 400vh = full match */}
+      <div style={{ height: '400vh', background: 'transparent', pointerEvents: 'none' }} />
 
       {/* Fixed 3D scene */}
-      <Scene
-        progress={progress}
-        isZoomed={isZoomed}
-        isGoal={isGoal}
-        activeDefenders={activeDefenders}
-        onGoal={handleGoal}
-      />
+      <Suspense fallback={<LoadingScreen />}>
+        <Scene
+          progress={progress}
+          isZoomed={isZoomed}
+          isGoal={isGoal}
+          activeDefenders={activeDefenders}
+          onGoal={handleGoal}
+        />
+      </Suspense>
 
       {/* UI layers */}
       <HUD progress={progress} activeZone={activeZone} />

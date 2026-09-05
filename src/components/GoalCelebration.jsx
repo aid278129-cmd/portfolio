@@ -106,29 +106,53 @@ export function GoalCelebration({ visible }) {
               Let's build something great together
             </motion.p>
 
-            <motion.button
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.1 }}
-              style={{
-                marginTop: '1.5rem',
-                padding: '0.75rem 2rem',
-                background: 'linear-gradient(135deg, #f0c040, #c49a20)',
-                color: '#000',
-                border: 'none',
-                borderRadius: '40px',
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 700,
-                fontSize: '0.95rem',
-                letterSpacing: '0.08em',
-                cursor: 'pointer',
-                pointerEvents: 'all',
-                boxShadow: '0 4px 24px rgba(240,192,64,0.4)',
-              }}
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}
             >
-              Watch the Replay ↑
-            </motion.button>
+              <button
+                style={{
+                  padding: '0.75rem 2rem',
+                  background: 'linear-gradient(135deg, #f0c040, #c49a20)',
+                  color: '#000',
+                  border: 'none',
+                  borderRadius: '40px',
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 700,
+                  fontSize: '0.95rem',
+                  letterSpacing: '0.08em',
+                  cursor: 'pointer',
+                  pointerEvents: 'all',
+                  boxShadow: '0 4px 24px rgba(240,192,64,0.4)',
+                }}
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              >
+                ↑ Replay
+              </button>
+              <a
+                href="mailto:your@email.com"
+                style={{
+                  padding: '0.75rem 2rem',
+                  background: 'linear-gradient(135deg, #f0c040, #c49a20)',
+                  color: '#000',
+                  border: 'none',
+                  borderRadius: '40px',
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 700,
+                  fontSize: '0.95rem',
+                  letterSpacing: '0.08em',
+                  cursor: 'pointer',
+                  pointerEvents: 'all',
+                  boxShadow: '0 4px 24px rgba(240,192,64,0.4)',
+                  textDecoration: 'none',
+                  display: 'inline-block',
+                }}
+              >
+                Get in Touch →
+              </a>
+            </motion.div>
           </div>
         </motion.div>
       )}

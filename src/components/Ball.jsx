@@ -140,8 +140,8 @@ export function Ball({ progress, onGoal }) {
     const dt = Math.min(rawDelta, 0.05)
     const elapsed = clock.getElapsedTime()
 
-    // Primary scroll lerp — smooth drag behind scroll
-    smoothP.current = gsapLerp(smoothP.current, progress, 0.06, dt)
+    // Primary scroll lerp — heavier drag for cinematic glide
+    smoothP.current = gsapLerp(smoothP.current, progress, 0.035, dt)
     const t = Math.max(0, Math.min(1, smoothP.current))
 
     const pos = new Vector3()
@@ -190,9 +190,9 @@ export function Ball({ progress, onGoal }) {
     }
 
     // Secondary position lerp — double-smoothing removes residual jitter
-    smoothPos.current.x = gsapLerp(smoothPos.current.x, pos.x, 0.04, dt)
-    smoothPos.current.y = gsapLerp(smoothPos.current.y, pos.y, 0.04, dt)
-    smoothPos.current.z = gsapLerp(smoothPos.current.z, pos.z, 0.04, dt)
+    smoothPos.current.x = gsapLerp(smoothPos.current.x, pos.x, 0.025, dt)
+    smoothPos.current.y = gsapLerp(smoothPos.current.y, pos.y, 0.025, dt)
+    smoothPos.current.z = gsapLerp(smoothPos.current.z, pos.z, 0.025, dt)
     meshRef.current.position.copy(smoothPos.current)
 
     // ── Velocity-driven rotation (30% slower — weighted spin) ──────

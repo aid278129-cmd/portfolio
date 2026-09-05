@@ -1,0 +1,37 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --green-field: #2d5a27;
+  --green-light: #3a7a32;
+  --gold: #f0c040;
+  --gold-dark: #c49a20;
+  --white: #ffffff;
+  --off-white: #f5f0e8;
+  --dark: #080c14;
+  --dark-2: #111111;
+  --gray: #888;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+html, body, #root {
+  width: 100%;
+  min-height: 100%;
+  background: #080c14;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+canvas {
+  touch-action: none;
+  display: block;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #c49a20; border-radius: 2px; }
